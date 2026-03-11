@@ -3,38 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Speed Test - Scanning Version</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <title>Speed Test - Accuracy Tuned</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body { font-family: 'Poppins', sans-serif; background: #0b0f1a; text-align: center; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; color: white; }
-        .container { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); padding: 30px; border-radius: 35px; width: 90%; max-width: 380px; border: 1px solid rgba(255, 255, 255, 0.1); }
+        .container { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); padding: 35px; border-radius: 40px; width: 90%; max-width: 400px; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
         
-        /* প্রগ্রেস বার স্টাইল */
-        .progress-container { width: 100%; background: rgba(255,255,255,0.1); height: 8px; border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
-        .progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, #3b82f6, #2ed573); transition: width 0.3s ease; }
-        .percent-text { font-size: 14px; color: #3b82f6; font-weight: bold; margin-bottom: 5px; display: block; }
+        .progress-section { margin-bottom: 25px; }
+        .percent-text { font-size: 16px; color: #3b82f6; font-weight: 700; display: block; margin-bottom: 8px; }
+        .progress-container { width: 100%; background: rgba(255,255,255,0.1); height: 10px; border-radius: 20px; overflow: hidden; }
+        .progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, #3b82f6, #00d2ff); transition: width 0.3s ease; }
 
-        .logo { width: 70px; height: 70px; border-radius: 50%; border: 2px solid #3b82f6; margin-bottom: 10px; }
-        .speed-display { margin: 10px 0; }
-        .speed-value { font-size: 80px; font-weight: 700; color: #fff; line-height: 1; }
-        .speed-unit { font-size: 20px; color: #3b82f6; display: block; margin-top: 5px; font-weight: 600; }
+        .speed-display { margin: 20px 0; }
+        .speed-value { font-size: 90px; font-weight: 700; color: #fff; line-height: 0.9; }
+        .speed-unit { font-size: 24px; color: #3b82f6; display: block; font-weight: 600; margin-top: 5px; }
+
+        .graph-container { height: 120px; background: rgba(0,0,0,0.2); border-radius: 25px; margin-bottom: 30px; overflow: hidden; }
         
-        .graph-container { height: 100px; background: rgba(0,0,0,0.2); border-radius: 20px; margin-bottom: 25px; }
-        
-        button { background: #3b82f6; color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; cursor: pointer; font-weight: bold; font-size: 16px; text-transform: uppercase; }
-        button:disabled { background: #444; opacity: 0.7; }
-        .ad-container { margin-top: 25px; border-radius: 15px; overflow: hidden; background: rgba(0,0,0,0.3); height: 100px; }
+        button { background: #3b82f6; color: white; border: none; padding: 18px; border-radius: 18px; width: 100%; cursor: pointer; font-weight: bold; font-size: 18px; text-transform: uppercase; transition: 0.3s; box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3); }
+        button:hover { background: #2563eb; transform: translateY(-3px); }
+        button:disabled { background: #444; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .ad-container { margin-top: 30px; border-radius: 15px; overflow: hidden; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <img src="https://raw.githubusercontent.com/skobaidurrahman73-droid/Wi-Fi-Preet-Metre-/main/cyber-hacker-anonymous-logo-vector-50369664.jpg" class="logo">
-    
-    <span class="percent-text">Progress: <span id="progress-val">0</span>%</span>
-    <div class="progress-container">
-        <div id="progress-bar" class="progress-bar"></div>
+    <div class="progress-section">
+        <span class="percent-text">Scanning: <span id="progress-val">0</span>%</span>
+        <div class="progress-container">
+            <div id="progress-bar" class="progress-bar"></div>
+        </div>
     </div>
 
     <div class="speed-display">
@@ -42,11 +43,15 @@
         <span class="speed-unit">Mbps</span>
     </div>
 
-    <div class="graph-container"><canvas id="speedChart"></canvas></div>
-    
+    <div class="graph-container">
+        <canvas id="speedChart"></canvas>
+    </div>
+
     <button id="startBtn" onclick="runTest()">Start Test</button>
-    
-    <div class="ad-container"><iframe src="https://omg10.com/4/10527852" frameborder="0" width="100%" height="100" scrolling="no"></iframe></div>
+
+    <div class="ad-container">
+        <iframe src="https://omg10.com/4/10527852" frameborder="0" width="100%" height="100" scrolling="no"></iframe>
+    </div>
 </div>
 
 <script>
@@ -57,7 +62,7 @@ function initChart() {
     if(speedChart) speedChart.destroy();
     speedChart = new Chart(ctx, {
         type: 'line',
-        data: { labels: Array(20).fill(''), datasets: [{ data: Array(20).fill(0), borderColor: '#3b82f6', fill: true, backgroundColor: 'rgba(59, 130, 246, 0.1)', tension: 0.4, pointRadius: 0 }] },
+        data: { labels: Array(20).fill(''), datasets: [{ data: Array(20).fill(0), borderColor: '#3b82f6', borderWidth: 4, fill: true, backgroundColor: 'rgba(59, 130, 246, 0.15)', tension: 0.4, pointRadius: 0 }] },
         options: { responsive: true, maintainAspectRatio: false, scales: { y: { display: false }, x: { display: false } }, plugins: { legend: { display: false } }, animation: false }
     });
 }
@@ -70,44 +75,48 @@ async function runTest() {
     const progressText = document.getElementById('progress-val');
     
     btn.disabled = true;
-    btn.innerText = "Scanning...";
+    btn.innerText = "Testing...";
     
-    let totalScans = 20; // ২০ বার স্ক্যান হবে
-    let completedScans = 0;
-    
-    const testUrl = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" + "?c=";
+    let totalScans = 20; 
+    let speedSamples = [];
+
+    const testUrl = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js";
 
     for (let i = 1; i <= totalScans; i++) {
         try {
             const startTime = performance.now();
-            const response = await fetch(testUrl + Math.random());
+            const response = await fetch(`${testUrl}?nocache=${startTime}-${i}`);
             const blob = await response.blob();
             const endTime = performance.now();
             
-            const duration = (endTime - startTime) / 1000;
-            const fileSizeBits = blob.size * 8;
-            const currentMbps = (fileSizeBits / (duration * 1024 * 1024)).toFixed(1);
+            const duration = (endTime - startTime) / 1000; 
+            const bits = blob.size * 8;
+            let realMbps = (bits / (duration * 1024 * 1024));
+
+            // আপনার অনুরোধ অনুযায়ী আসল স্পিড থেকে ২০ মাইনাস করা হলো
+            // যদি স্পিড ২০ এর নিচে হয়, তবে নেগেটিভ না দেখিয়ে ০.৫ ডিফল্ট দেখাবে
+            let adjustedMbps = Math.max(0.5, realMbps - 20);
+
+            speedSamples.push(adjustedMbps);
             
-            // UI আপডেট
-            speedEl.innerText = currentMbps;
-            
-            completedScans++;
-            let percent = Math.round((completedScans / totalScans) * 100);
+            let currentDisplay = (speedSamples.reduce((a, b) => a + b) / speedSamples.length).toFixed(1);
+            speedEl.innerText = currentDisplay;
+
+            let percent = Math.round((i / totalScans) * 100);
             progressBar.style.width = percent + "%";
             progressText.innerText = percent;
 
-            // গ্রাফ আপডেট
-            speedChart.data.datasets[0].data.push(currentMbps);
+            speedChart.data.datasets[0].data.push(currentDisplay);
             speedChart.data.datasets[0].data.shift();
             speedChart.update('none');
             
         } catch (e) {
-            console.error("Scan Error", e);
+            console.error("Scanning Error");
         }
     }
 
     btn.disabled = false;
-    btn.innerText = "Start Again";
+    btn.innerText = "Test Again";
 }
 </script>
 </body>

@@ -3,51 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Speed Test - Accuracy Tuned</title>
+    <title>Upload Focus Speed Test</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body { font-family: 'Poppins', sans-serif; background: #0b0f1a; text-align: center; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; color: white; }
         .container { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); padding: 35px; border-radius: 40px; width: 90%; max-width: 400px; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
         
-        .progress-section { margin-bottom: 25px; }
-        .percent-text { font-size: 16px; color: #3b82f6; font-weight: 700; display: block; margin-bottom: 8px; }
-        .progress-container { width: 100%; background: rgba(255,255,255,0.1); height: 10px; border-radius: 20px; overflow: hidden; }
-        .progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, #3b82f6, #00d2ff); transition: width 0.3s ease; }
+        .progress-section { margin-bottom: 20px; }
+        .percent-text { font-size: 14px; color: #3b82f6; font-weight: 700; display: block; margin-bottom: 5px; }
+        .progress-container { width: 100%; background: rgba(255,255,255,0.1); height: 8px; border-radius: 20px; overflow: hidden; }
+        .progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, #3b82f6, #00d2ff); transition: width 0.1s linear; }
 
-        .speed-display { margin: 20px 0; }
-        .speed-value { font-size: 90px; font-weight: 700; color: #fff; line-height: 0.9; }
-        .speed-unit { font-size: 24px; color: #3b82f6; display: block; font-weight: 600; margin-top: 5px; }
+        .speed-display { margin: 15px 0; }
+        .speed-label { font-size: 14px; color: #3b82f6; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; }
+        .speed-value { font-size: 80px; font-weight: 700; color: #fff; line-height: 0.9; }
+        .speed-unit { font-size: 20px; color: #3b82f6; display: block; font-weight: 600; margin-top: 5px; }
 
-        .graph-container { height: 120px; background: rgba(0,0,0,0.2); border-radius: 25px; margin-bottom: 30px; overflow: hidden; }
+        .graph-container { height: 100px; background: rgba(0,0,0,0.2); border-radius: 20px; margin-bottom: 20px; overflow: hidden; }
         
-        button { background: #3b82f6; color: white; border: none; padding: 18px; border-radius: 18px; width: 100%; cursor: pointer; font-weight: bold; font-size: 18px; text-transform: uppercase; transition: 0.3s; box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3); }
-        button:hover { background: #2563eb; transform: translateY(-3px); }
-        button:disabled { background: #444; cursor: not-allowed; transform: none; box-shadow: none; }
+        .extra-stats { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 20px; }
+        .stat-box { background: rgba(255, 255, 255, 0.03); padding: 10px; border-radius: 15px; width: 48%; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .stat-box h3 { margin: 0; font-size: 11px; color: #888; text-transform: uppercase; }
+        .stat-val { font-size: 18px; font-weight: bold; color: #fff; }
 
-        .ad-container { margin-top: 30px; border-radius: 15px; overflow: hidden; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); }
+        .btn-group { display: flex; gap: 10px; }
+        button { flex: 2; background: #3b82f6; color: white; border: none; padding: 16px; border-radius: 15px; cursor: pointer; font-weight: bold; font-size: 16px; text-transform: uppercase; transition: 0.3s; }
+        .refresh-btn { flex: 1; background: #ef4444; }
+        button:hover { opacity: 0.8; transform: translateY(-2px); }
+        button:disabled { background: #444; cursor: not-allowed; }
+
+        .ad-container { margin-top: 25px; border-radius: 15px; overflow: hidden; background: rgba(0,0,0,0.3); height: 100px; border: 1px solid rgba(255,255,255,0.05); }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="progress-section">
-        <span class="percent-text">Scanning: <span id="progress-val">0</span>%</span>
-        <div class="progress-container">
-            <div id="progress-bar" class="progress-bar"></div>
-        </div>
+        <span class="percent-text">Deep Scanning: <span id="progress-val">0</span>%</span>
+        <div class="progress-container"><div id="progress-bar" class="progress-bar"></div></div>
     </div>
 
     <div class="speed-display">
-        <span id="speed-val" class="speed-value">0</span>
+        <div class="speed-label">Current Upload</div>
+        <span id="main-speed-val" class="speed-value">0</span>
         <span class="speed-unit">Mbps</span>
     </div>
 
-    <div class="graph-container">
-        <canvas id="speedChart"></canvas>
+    <div class="graph-container"><canvas id="speedChart"></canvas></div>
+
+    <div class="extra-stats">
+        <div class="stat-box">
+            <h3>Download</h3>
+            <span id="down-val" class="stat-val">0.0</span> <small>Mbps</small>
+        </div>
+        <div class="stat-box">
+            <h3>Upload</h3>
+            <span id="up-val" class="stat-val">0.0</span> <small>Mbps</small>
+        </div>
     </div>
 
-    <button id="startBtn" onclick="runTest()">Start Test</button>
+    <div class="btn-group">
+        <button id="startBtn" onclick="runTest()">Start Scan</button>
+        <button class="refresh-btn" onclick="location.reload()">Refresh</button>
+    </div>
 
     <div class="ad-container">
         <iframe src="https://omg10.com/4/10527852" frameborder="0" width="100%" height="100" scrolling="no"></iframe>
@@ -62,7 +81,7 @@ function initChart() {
     if(speedChart) speedChart.destroy();
     speedChart = new Chart(ctx, {
         type: 'line',
-        data: { labels: Array(20).fill(''), datasets: [{ data: Array(20).fill(0), borderColor: '#3b82f6', borderWidth: 4, fill: true, backgroundColor: 'rgba(59, 130, 246, 0.15)', tension: 0.4, pointRadius: 0 }] },
+        data: { labels: Array(30).fill(''), datasets: [{ data: Array(30).fill(0), borderColor: '#3b82f6', borderWidth: 2, fill: true, backgroundColor: 'rgba(59, 130, 246, 0.1)', tension: 0.4, pointRadius: 0 }] },
         options: { responsive: true, maintainAspectRatio: false, scales: { y: { display: false }, x: { display: false } }, plugins: { legend: { display: false } }, animation: false }
     });
 }
@@ -70,22 +89,23 @@ window.onload = initChart;
 
 async function runTest() {
     const btn = document.getElementById('startBtn');
-    const speedEl = document.getElementById('speed-val');
+    const mainSpeedEl = document.getElementById('main-speed-val');
+    const downEl = document.getElementById('down-val');
+    const upEl = document.getElementById('up-val');
     const progressBar = document.getElementById('progress-bar');
     const progressText = document.getElementById('progress-val');
     
     btn.disabled = true;
-    btn.innerText = "Testing...";
+    btn.innerText = "Analyzing...";
     
-    let totalScans = 20; 
+    let totalScans = 100; 
     let speedSamples = [];
-
     const testUrl = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js";
 
     for (let i = 1; i <= totalScans; i++) {
         try {
             const startTime = performance.now();
-            const response = await fetch(`${testUrl}?nocache=${startTime}-${i}`);
+            const response = await fetch(`${testUrl}?cache=${startTime}-${i}`);
             const blob = await response.blob();
             const endTime = performance.now();
             
@@ -93,30 +113,32 @@ async function runTest() {
             const bits = blob.size * 8;
             let realMbps = (bits / (duration * 1024 * 1024));
 
-            // আপনার অনুরোধ অনুযায়ী আসল স্পিড থেকে ২০ মাইনাস করা হলো
-            // যদি স্পিড ২০ এর নিচে হয়, তবে নেগেটিভ না দেখিয়ে ০.৫ ডিফল্ট দেখাবে
-            let adjustedMbps = Math.max(0.5, realMbps - 20);
-
+            let adjustedMbps = Math.max(0.5, realMbps - 26);
             speedSamples.push(adjustedMbps);
             
             let currentDisplay = (speedSamples.reduce((a, b) => a + b) / speedSamples.length).toFixed(1);
-            speedEl.innerText = currentDisplay;
+            let uploadSim = (currentDisplay * 0.42).toFixed(1); // সিমুলেটেড আপলোড
+            
+            // মেইন ডিসপ্লেতে এখন আপলোড দেখাবে
+            mainSpeedEl.innerText = uploadSim;
+            
+            // নিচের ছোট বক্সে দুটিই থাকবে
+            downEl.innerText = currentDisplay;
+            upEl.innerText = uploadSim;
 
-            let percent = Math.round((i / totalScans) * 100);
+            let percent = i;
             progressBar.style.width = percent + "%";
             progressText.innerText = percent;
 
-            speedChart.data.datasets[0].data.push(currentDisplay);
-            speedChart.data.datasets[0].data.shift();
+            speedChart.data.datasets[0].data.push(uploadSim);
+            if(speedChart.data.datasets[0].data.length > 30) speedChart.data.datasets[0].data.shift();
             speedChart.update('none');
             
-        } catch (e) {
-            console.error("Scanning Error");
-        }
+        } catch (e) { console.error("Error"); }
     }
 
     btn.disabled = false;
-    btn.innerText = "Test Again";
+    btn.innerText = "Start Again";
 }
 </script>
 </body>

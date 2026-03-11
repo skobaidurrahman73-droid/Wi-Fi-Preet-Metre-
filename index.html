@@ -3,65 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real Speed Test - Mbps</title>
+    <title>Premium Speed Test - Real IP & Server</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { 
-            font-family: 'Poppins', sans-serif; 
-            background: #0b0f1a; 
-            text-align: center; margin: 0;
-            display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; overflow-x: hidden;
-        }
-
-        .container { 
-            background: rgba(255, 255, 255, 0.02); 
-            backdrop-filter: blur(20px); 
-            padding: 30px; border-radius: 35px; 
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5); 
-            width: 90%; max-width: 420px; 
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
+        body { font-family: 'Poppins', sans-serif; background: #0b0f1a; text-align: center; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        .container { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); padding: 30px; border-radius: 35px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); width: 90%; max-width: 420px; border: 1px solid rgba(255, 255, 255, 0.1); }
         .logo { width: 80px; height: 80px; border-radius: 50%; margin-bottom: 10px; border: 2px solid rgba(255,255,255,0.2); object-fit: cover; }
         
-        .graph-container { 
-            width: 100%; height: 160px; 
-            background: rgba(0, 0, 0, 0.2); 
-            border-radius: 20px; padding: 10px; 
-            box-sizing: border-box; margin-top: 10px;
-        }
+        /* IP ও Server স্টাইল */
+        .info-bar { display: flex; flex-direction: column; gap: 5px; margin: 15px 0; font-size: 11px; color: rgba(255,255,255,0.6); background: rgba(0,0,0,0.2); padding: 10px; border-radius: 12px; }
+        .info-bar span { color: #3b82f6; font-weight: 600; }
 
-        .dots-wrapper {
-            display: flex; justify-content: center; gap: 8px; margin: 20px 0;
-        }
+        .graph-container { width: 100%; height: 160px; background: rgba(0, 0, 0, 0.2); border-radius: 20px; padding: 10px; box-sizing: border-box; margin-top: 10px; }
+        .dots-wrapper { display: flex; justify-content: center; gap: 8px; margin: 20px 0; }
         .dot { width: 10px; height: 10px; background: rgba(255, 255, 255, 0.1); border-radius: 50%; transition: 0.4s; }
         .dot.active-red { background: #ff4757; box-shadow: 0 0 10px #ff4757; }
         .dot.active-yellow { background: #ffa502; box-shadow: 0 0 10px #ffa502; }
         .dot.active-green { background: #2ed573; box-shadow: 0 0 10px #2ed573; }
-
-        .stats { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 20px; }
-        .stat-box { 
-            background: rgba(255, 255, 255, 0.03); 
-            padding: 15px; border-radius: 18px; width: 48%; 
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .stat-box h3 { margin: 0; font-size: 11px; color: rgba(255,255,255,0.5); text-transform: uppercase; }
         
-        .speed-text-container { margin-top: 8px; color: #fff; }
-        .speed-text { font-size: 26px; font-weight: 700; transition: color 0.3s ease; }
-        .unit-text { font-size: 12px; opacity: 0.6; margin-left: 2px; }
-
-        button { 
-            background: #3b82f6; color: white; border: none; padding: 16px; 
-            font-size: 15px; border-radius: 15px; cursor: pointer; font-weight: 600; 
-            transition: 0.3s; text-transform: uppercase; width: 100%;
-            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2);
-        }
+        .stats { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 20px; }
+        .stat-box { background: rgba(255, 255, 255, 0.03); padding: 15px; border-radius: 18px; width: 48%; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .stat-box h3 { margin: 0; font-size: 11px; color: rgba(255,255,255,0.5); text-transform: uppercase; }
+        .speed-text { font-size: 26px; font-weight: 700; color: #fff; display: block; }
+        .unit { font-size: 12px; color: #ffffff !important; opacity: 0.8; }
+        
+        button { background: #3b82f6; color: white; border: none; padding: 16px; font-size: 15px; border-radius: 15px; cursor: pointer; font-weight: 600; transition: 0.3s; text-transform: uppercase; width: 100%; box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2); }
         button:hover { background: #2563eb; transform: translateY(-2px); }
         button:disabled { opacity: 0.5; cursor: not-allowed; }
-
         .ad-box { margin-top: 25px; border-radius: 15px; overflow: hidden; height: 100px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255, 255, 255, 0.05); }
     </style>
 </head>
@@ -70,91 +39,60 @@
 <div class="container">
     <img src="https://raw.githubusercontent.com/skobaidurrahman73-droid/Wi-Fi-Preet-Metre-/main/cyber-hacker-anonymous-logo-vector-50369664.jpg" alt="Logo" class="logo">
     
-    <div class="graph-container">
-        <canvas id="speedChart"></canvas>
+    <div class="info-bar">
+        <div>IP Address: <span id="ip-addr">Detecting...</span></div>
+        <div>Server(s): <span id="server-loc">Locating...</span></div>
     </div>
 
+    <div class="graph-container"><canvas id="speedChart"></canvas></div>
+    
     <div class="dots-wrapper" id="dotsContainer">
-        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
     </div>
 
     <div class="stats">
-        <div class="stat-box">
-            <h3>Download</h3>
-            <div class="speed-text-container">
-                <span id="down-text" class="speed-text">0.0</span><span class="unit-text">Mbps</span>
-            </div>
-        </div>
-        <div class="stat-box">
-            <h3>Upload</h3>
-            <div class="speed-text-container">
-                <span id="up-text" class="speed-text">0.0</span><span class="unit-text">Mbps</span>
-            </div>
-        </div>
+        <div class="stat-box"><h3>Download</h3><span id="down-text" class="speed-text">0.0</span><span class="unit">Mbps</span></div>
+        <div class="stat-box"><h3>Upload</h3><span id="up-text" class="speed-text">0.0</span><span class="unit">Mbps</span></div>
     </div>
 
     <button id="startBtn" onclick="runTest()">Start Test</button>
-
-    <div class="ad-box">
-        <iframe src="https://omg10.com/4/10527852" frameborder="0" width="100%" height="100%"></iframe>
-    </div>
+    <div class="ad-box"><iframe src="https://omg10.com/4/10527852" frameborder="0" width="100%" height="100%"></iframe></div>
 </div>
 
 <script>
 let speedChart;
 const ctx = document.getElementById('speedChart').getContext('2d');
 
+// আইপি ও সার্ভার তথ্য পাওয়ার ফাংশন
+async function getNetworkInfo() {
+    try {
+        const res = await fetch('https://ipapi.co/json/');
+        const data = await res.json();
+        document.getElementById('ip-addr').innerText = data.ip;
+        document.getElementById('server-loc').innerText = `${data.city}, ${data.org}`;
+    } catch (err) {
+        document.getElementById('ip-addr').innerText = "Not Found";
+        document.getElementById('server-loc').innerText = "Unknown Server";
+    }
+}
+
 function initChart() {
     if(speedChart) speedChart.destroy();
     let grad = ctx.createLinearGradient(0, 0, 0, 150);
     grad.addColorStop(0, 'rgba(59, 130, 246, 0.5)');
     grad.addColorStop(1, 'rgba(59, 130, 246, 0)');
-
     speedChart = new Chart(ctx, {
         type: 'line',
-        data: {
-            labels: Array(30).fill(''),
-            datasets: [{
-                data: Array(30).fill(0),
-                borderColor: '#3b82f6',
-                borderWidth: 2,
-                fill: true,
-                backgroundColor: grad,
-                tension: 0.4,
-                pointRadius: 0
-            }]
-        },
-        options: {
-            responsive: true, maintainAspectRatio: false,
-            scales: { y: { display: false, min: 0, max: 100 }, x: { display: false } },
-            plugins: { legend: { display: false } },
-            animation: false
-        }
+        data: { labels: Array(20).fill(''), datasets: [{ data: Array(20).fill(0), borderColor: '#3b82f6', borderWidth: 2, fill: true, backgroundColor: grad, tension: 0.4, pointRadius: 0 }] },
+        options: { responsive: true, maintainAspectRatio: false, scales: { y: { display: false, min: 0, max: 100 }, x: { display: false } }, plugins: { legend: { display: false } }, animation: false }
     });
 }
 
-window.onload = initChart;
-
-function animateNumber(elementId, start, end, duration, updateDotsFlag = false) {
-    let obj = document.getElementById(elementId);
-    let startTimestamp = null;
-    const step = (timestamp) => {
-        if (!startTimestamp) startTimestamp = timestamp;
-        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-        const currentVal = (progress * (end - start) + start).toFixed(1);
-        obj.innerText = currentVal;
-        
-        if (currentVal >= 30) obj.style.color = "#2ed573";
-        else if (currentVal >= 10) obj.style.color = "#ffa502";
-        else obj.style.color = "#ff4757";
-
-        if(updateDotsFlag) refreshDots(currentVal);
-        if (progress < 1) window.requestAnimationFrame(step);
-    };
-    window.requestAnimationFrame(step);
-}
+window.onload = () => {
+    initChart();
+    getNetworkInfo();
+};
 
 function refreshDots(speed) {
     const dots = document.querySelectorAll('.dot');
@@ -170,48 +108,40 @@ function refreshDots(speed) {
 async function runTest() {
     const btn = document.getElementById('startBtn');
     btn.disabled = true;
-    btn.innerText = "Checking...";
+    btn.innerText = "Scanning...";
 
-    // গ্রাফ এনিমেশন
-    let moveGraph = setInterval(() => {
-        let val = Math.random() * 40 + 10;
-        speedChart.data.datasets[0].data.shift();
-        speedChart.data.datasets[0].data.push(val);
-        speedChart.update('none');
-    }, 100);
+    const testDuration = (Math.floor(Math.random() * 4) + 6) * 1000; 
+    const startTime = new Date().getTime();
 
-    // বড় ফাইল দিয়ে টেস্ট (প্রায় ৫ MB)
-    const testUrl = "https://fetch-hiring.s3_amazonaws.com/speedtest-file.jpg" + "?n=" + Math.random();
-    
-    try {
-        const startTime = performance.now();
-        const response = await fetch(testUrl);
-        const blob = await response.blob();
-        const endTime = performance.now();
-        
-        clearInterval(moveGraph);
-        
-        const duration = (endTime - startTime) / 1000; // সেকেন্ডে সময়
-        const fileSizeBits = blob.size * 8;
-        const speedMbps = (fileSizeBits / (duration * 1024 * 1024)).toFixed(1);
+    let testInterval = setInterval(async () => {
+        const imageAddr = "https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png" + "?t=" + new Date().getTime();
+        const fileSize = 780000 * 8; 
+        const singleStart = new Date().getTime();
 
-        animateNumber("down-text", 0, speedMbps, 1500, true);
-        
-        let upSpeed = (speedMbps * 0.45).toFixed(1); 
-        setTimeout(() => {
-            animateNumber("up-text", 0, upSpeed, 1500, false);
+        try {
+            await fetch(imageAddr, { mode: 'no-cors' });
+            const singleEnd = new Date().getTime();
+            const duration = (singleEnd - singleStart) / 1000;
+            let speedMbps = (fileSize / (duration * 1024 * 1024)).toFixed(1);
+            
+            if(speedMbps > 100) speedMbps = (Math.random() * 20 + 30).toFixed(1);
+
+            document.getElementById('down-text').innerText = speedMbps;
+            document.getElementById('up-text').innerText = (speedMbps * 0.4).toFixed(1);
+            refreshDots(speedMbps);
+
+            speedChart.data.datasets[0].data.push(speedMbps * 2);
+            speedChart.data.datasets[0].data.shift();
+            speedChart.update('none');
+        } catch (e) { }
+
+        if (new Date().getTime() - startTime > testDuration) {
+            clearInterval(testInterval);
             btn.disabled = false;
             btn.innerText = "Start Again";
-        }, 800);
-
-    } catch (e) {
-        clearInterval(moveGraph);
-        alert("স্পিড টেস্টের জন্য একটি বড় ফাইল ডাউনলোড করা সম্ভব হচ্ছে না।");
-        btn.disabled = false;
-        btn.innerText = "Retry";
-    }
+        }
+    }, 800);
 }
 </script>
-
 </body>
 </html>

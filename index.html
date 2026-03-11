@@ -3,155 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Speed Test - Real IP & Server</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Speed Test - Scanning Version</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { font-family: 'Poppins', sans-serif; background: #0b0f1a; text-align: center; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow-x: hidden; }
-        .container { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); padding: 30px; border-radius: 35px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); width: 90%; max-width: 420px; border: 1px solid rgba(255, 255, 255, 0.1); }
-        .logo { width: 80px; height: 80px; border-radius: 50%; margin-bottom: 10px; border: 2px solid rgba(255,255,255,0.2); object-fit: cover; }
+        body { font-family: 'Poppins', sans-serif; background: #0b0f1a; text-align: center; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; color: white; }
+        .container { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); padding: 30px; border-radius: 35px; width: 90%; max-width: 380px; border: 1px solid rgba(255, 255, 255, 0.1); }
         
-        .info-bar { display: flex; flex-direction: column; gap: 5px; margin: 15px 0; font-size: 11px; color: rgba(255,255,255,0.6); background: rgba(0,0,0,0.3); padding: 12px; border-radius: 15px; border: 1px solid rgba(59, 130, 246, 0.2); }
-        .info-bar span { color: #3b82f6; font-weight: 600; }
+        /* প্রগ্রেস বার স্টাইল */
+        .progress-container { width: 100%; background: rgba(255,255,255,0.1); height: 8px; border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
+        .progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, #3b82f6, #2ed573); transition: width 0.3s ease; }
+        .percent-text { font-size: 14px; color: #3b82f6; font-weight: bold; margin-bottom: 5px; display: block; }
 
-        .graph-container { width: 100%; height: 160px; background: rgba(0, 0, 0, 0.2); border-radius: 20px; padding: 10px; box-sizing: border-box; margin-top: 10px; }
-        .dots-wrapper { display: flex; justify-content: center; gap: 8px; margin: 20px 0; }
-        .dot { width: 10px; height: 10px; background: rgba(255, 255, 255, 0.1); border-radius: 50%; transition: 0.4s; }
-        .dot.active-red { background: #ff4757; box-shadow: 0 0 10px #ff4757; }
-        .dot.active-yellow { background: #ffa502; box-shadow: 0 0 10px #ffa502; }
-        .dot.active-green { background: #2ed573; box-shadow: 0 0 10px #2ed573; }
+        .logo { width: 70px; height: 70px; border-radius: 50%; border: 2px solid #3b82f6; margin-bottom: 10px; }
+        .speed-display { margin: 10px 0; }
+        .speed-value { font-size: 80px; font-weight: 700; color: #fff; line-height: 1; }
+        .speed-unit { font-size: 20px; color: #3b82f6; display: block; margin-top: 5px; font-weight: 600; }
         
-        .stats { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 20px; }
-        .stat-box { background: rgba(255, 255, 255, 0.03); padding: 15px; border-radius: 18px; width: 48%; border: 1px solid rgba(255, 255, 255, 0.05); }
-        .stat-box h3 { margin: 0; font-size: 11px; color: rgba(255,255,255,0.5); text-transform: uppercase; }
-        .speed-text { font-size: 26px; font-weight: 700; color: #fff; display: block; }
-        .unit { font-size: 12px; color: #ffffff !important; opacity: 0.8; }
+        .graph-container { height: 100px; background: rgba(0,0,0,0.2); border-radius: 20px; margin-bottom: 25px; }
         
-        button { background: #3b82f6; color: white; border: none; padding: 16px; font-size: 15px; border-radius: 15px; cursor: pointer; font-weight: 600; transition: 0.3s; text-transform: uppercase; width: 100%; box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2); }
-        button:hover { background: #2563eb; transform: translateY(-2px); }
-        button:disabled { opacity: 0.5; cursor: not-allowed; }
-        .ad-box { margin-top: 25px; border-radius: 15px; overflow: hidden; height: 100px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255, 255, 255, 0.05); }
+        button { background: #3b82f6; color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; cursor: pointer; font-weight: bold; font-size: 16px; text-transform: uppercase; }
+        button:disabled { background: #444; opacity: 0.7; }
+        .ad-container { margin-top: 25px; border-radius: 15px; overflow: hidden; background: rgba(0,0,0,0.3); height: 100px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <img src="https://raw.githubusercontent.com/skobaidurrahman73-droid/Wi-Fi-Preet-Metre-/main/cyber-hacker-anonymous-logo-vector-50369664.jpg" alt="Logo" class="logo">
+    <img src="https://raw.githubusercontent.com/skobaidurrahman73-droid/Wi-Fi-Preet-Metre-/main/cyber-hacker-anonymous-logo-vector-50369664.jpg" class="logo">
     
-    <div class="info-bar">
-        <div>IP Address: <span id="ip-addr">Detecting...</span></div>
-        <div>Server(s): <span id="server-loc">Locating...</span></div>
+    <span class="percent-text">Progress: <span id="progress-val">0</span>%</span>
+    <div class="progress-container">
+        <div id="progress-bar" class="progress-bar"></div>
+    </div>
+
+    <div class="speed-display">
+        <span id="speed-val" class="speed-value">0</span>
+        <span class="speed-unit">Mbps</span>
     </div>
 
     <div class="graph-container"><canvas id="speedChart"></canvas></div>
     
-    <div class="dots-wrapper" id="dotsContainer">
-        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-    </div>
-
-    <div class="stats">
-        <div class="stat-box"><h3>Download</h3><span id="down-text" class="speed-text">0.0</span><span class="unit">Mbps</span></div>
-        <div class="stat-box"><h3>Upload</h3><span id="up-text" class="speed-text">0.0</span><span class="unit">Mbps</span></div>
-    </div>
-
     <button id="startBtn" onclick="runTest()">Start Test</button>
-    <div class="ad-box"><iframe src="https://omg10.com/4/10527852" frameborder="0" width="100%" height="100%"></iframe></div>
+    
+    <div class="ad-container"><iframe src="https://omg10.com/4/10527852" frameborder="0" width="100%" height="100" scrolling="no"></iframe></div>
 </div>
 
 <script>
 let speedChart;
 const ctx = document.getElementById('speedChart').getContext('2d');
 
-// উন্নত আইপি ও সার্ভার তথ্য পাওয়ার ফাংশন
-async function getNetworkInfo() {
-    try {
-        // প্রথম API ট্রাই করবে
-        const res = await fetch('https://api.ipify.org?format=json');
-        const data = await res.json();
-        const resDetail = await fetch(`https://ipapi.co/${data.ip}/json/`);
-        const detail = await resDetail.json();
-        
-        document.getElementById('ip-addr').innerText = detail.ip || "Hidden";
-        document.getElementById('server-loc').innerText = `${detail.city || 'Dhaka'}, ${detail.org || 'ISP'}`;
-    } catch (err) {
-        // ব্যাকআপ API
-        try {
-            const res = await fetch('https://ipwho.is/');
-            const data = await res.json();
-            document.getElementById('ip-addr').innerText = data.ip;
-            document.getElementById('server-loc').innerText = `${data.city}, ${data.connection.isp}`;
-        } catch (e) {
-            document.getElementById('ip-addr').innerText = "Unable to detect";
-            document.getElementById('server-loc').innerText = "Check Connection";
-        }
-    }
-}
-
 function initChart() {
     if(speedChart) speedChart.destroy();
-    let grad = ctx.createLinearGradient(0, 0, 0, 150);
-    grad.addColorStop(0, 'rgba(59, 130, 246, 0.5)');
-    grad.addColorStop(1, 'rgba(59, 130, 246, 0)');
     speedChart = new Chart(ctx, {
         type: 'line',
-        data: { labels: Array(20).fill(''), datasets: [{ data: Array(20).fill(0), borderColor: '#3b82f6', borderWidth: 2, fill: true, backgroundColor: grad, tension: 0.4, pointRadius: 0 }] },
-        options: { responsive: true, maintainAspectRatio: false, scales: { y: { display: false, min: 0, max: 100 }, x: { display: false } }, plugins: { legend: { display: false } }, animation: false }
+        data: { labels: Array(20).fill(''), datasets: [{ data: Array(20).fill(0), borderColor: '#3b82f6', fill: true, backgroundColor: 'rgba(59, 130, 246, 0.1)', tension: 0.4, pointRadius: 0 }] },
+        options: { responsive: true, maintainAspectRatio: false, scales: { y: { display: false }, x: { display: false } }, plugins: { legend: { display: false } }, animation: false }
     });
 }
-
-window.onload = () => {
-    initChart();
-    getNetworkInfo();
-};
-
-function refreshDots(speed) {
-    const dots = document.querySelectorAll('.dot');
-    dots.forEach(d => d.className = 'dot');
-    let count = Math.min(Math.ceil(speed / 10), 10);
-    for (let i = 0; i < count; i++) {
-        if (i < 3) dots[i].classList.add('active-red');
-        else if (i < 6) dots[i].classList.add('active-yellow');
-        else dots[i].classList.add('active-green');
-    }
-}
+window.onload = initChart;
 
 async function runTest() {
     const btn = document.getElementById('startBtn');
+    const speedEl = document.getElementById('speed-val');
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-val');
+    
     btn.disabled = true;
     btn.innerText = "Scanning...";
+    
+    let totalScans = 20; // ২০ বার স্ক্যান হবে
+    let completedScans = 0;
+    
+    const testUrl = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" + "?c=";
 
-    const testDuration = (Math.floor(Math.random() * 4) + 6) * 1000; 
-    const startTime = new Date().getTime();
-
-    let testInterval = setInterval(async () => {
-        const imageAddr = "https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png" + "?t=" + new Date().getTime();
-        const fileSize = 780000 * 8; 
-        const singleStart = new Date().getTime();
-
+    for (let i = 1; i <= totalScans; i++) {
         try {
-            await fetch(imageAddr, { mode: 'no-cors' });
-            const singleEnd = new Date().getTime();
-            const duration = (singleEnd - singleStart) / 1000;
-            let speedMbps = (fileSize / (duration * 1024 * 1024)).toFixed(1);
+            const startTime = performance.now();
+            const response = await fetch(testUrl + Math.random());
+            const blob = await response.blob();
+            const endTime = performance.now();
             
-            if(speedMbps > 100) speedMbps = (Math.random() * 20 + 30).toFixed(1);
+            const duration = (endTime - startTime) / 1000;
+            const fileSizeBits = blob.size * 8;
+            const currentMbps = (fileSizeBits / (duration * 1024 * 1024)).toFixed(1);
+            
+            // UI আপডেট
+            speedEl.innerText = currentMbps;
+            
+            completedScans++;
+            let percent = Math.round((completedScans / totalScans) * 100);
+            progressBar.style.width = percent + "%";
+            progressText.innerText = percent;
 
-            document.getElementById('down-text').innerText = speedMbps;
-            document.getElementById('up-text').innerText = (speedMbps * 0.4).toFixed(1);
-            refreshDots(speedMbps);
-
-            speedChart.data.datasets[0].data.push(speedMbps * 2);
+            // গ্রাফ আপডেট
+            speedChart.data.datasets[0].data.push(currentMbps);
             speedChart.data.datasets[0].data.shift();
             speedChart.update('none');
-        } catch (e) { }
-
-        if (new Date().getTime() - startTime > testDuration) {
-            clearInterval(testInterval);
-            btn.disabled = false;
-            btn.innerText = "Start Again";
+            
+        } catch (e) {
+            console.error("Scan Error", e);
         }
-    }, 800);
+    }
+
+    btn.disabled = false;
+    btn.innerText = "Start Again";
 }
 </script>
 </body>
